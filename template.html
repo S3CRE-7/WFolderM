@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="public/style.css">
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;400;600&display=swap');
+    :root{
+        --prim: #D17842;
+    }
+    * {
+        transition: .2s all;
+    }
+    body{
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1.2rem;
+        background: #0C0F14;
+        overflow-x: hidden;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+        font-family: 'Vazirmatn', sans-serif;
+    }
+    .card img {
+        max-height: 250px;
+        max-width: 300px;
+    }
+
+    .card {
+        border-radius: 10px;
+        background: linear-gradient(156deg, #21262E 0%, #141921 100%); 
+        color: white;
+        width: fit-content;
+        height: fit-content;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .card a {
+        padding: .45rem;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        color: #AEAEAE;
+        text-decoration: none;
+        font-size: .8rem;
+        background-color: #21262E;
+    }
+    .card a:hover {
+        color: var(--prim);
+        border-color: var(--prim);
+    }
+    .header {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: .5rem;
+        margin: 0;
+        background: linear-gradient(270deg, #0C0F14 20%, #21262E 100%); 
+        align-items: center;
+        justify-content: center;
+        display: flex;
+    }
+    .header p{
+        background: linear-gradient(270deg, rgba(242,69,255,1) 0%, rgba(96,230,247,1) 47%, rgba(255,104,0,1) 100%);
+        color: transparent;
+        font-size: 1.2rem;
+        background-clip: text;
+-webkit-background-clip: text;
+    }
+    .menu {
+        display: flex;
+        background-color: #0C0F14;
+        color: white;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        border-radius: 10px;
+        gap: .5rem;
+        font-size: 1.1rem;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        display: none;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+    }
+
+    .thm-btn:hover {
+        color: var(--prim);
+        border-color: var(--prim);
+    }
+    .thm-btn {
+        padding: .45rem;
+        border: 2px solid transparent;
+        border-radius: 10px;
+        color: #AEAEAE;
+        text-decoration: none;
+        font-size: 1rem;
+        background-color: #21262E;
+        width: 96%;
+        text-align: center;
+        outline: transparent;
+    }
+    .up-btn {
+        padding: .45rem;
+        border: 2px solid var(--prim);
+        border-radius: 10px;
+        color: var(--prim);
+        text-decoration: none;
+        font-size: 1rem;
+        background-color: #b9602838;
+        width: fit-content;
+        text-align: center;
+    }
+    .up-btn:hover {
+        cursor: pointer;
+    }
+    #folder {
+        padding: .45rem;
+        border: 2px solid transparent;
+        border-radius: 10px;
+        color: #AEAEAE;
+        text-decoration: none;
+        font-size: 1rem;
+        background-color: #21262E;
+        width: 100%;
+        text-align: center;
+        outline: transparent;
+    }
+
+    .bg {
+        width: 100%;
+        height: 100vh;
+        backdrop-filter: blur(10px);
+        background-color: rgba(84, 84, 84, 0.5);
+        z-index: 1;
+        position: fixed;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+    #thumbnail {
+        visibility: none;
+    }
+
+    #folder:hover {
+        color: var(--prim);
+        border-color: var(--prim);
+    }
+    .menu-btn {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        margin: 1.5rem;
+        padding: .45rem;
+        border: 2px solid var(--prim);
+        border-radius: 10px;
+        color: var(--prim);
+        text-decoration: none;
+        font-size: 1rem;
+        background-color: #b9602838;
+        width: fit-content;
+        text-align: center;
+    }
+    </style>
+</head>
+<body>
+    <form class="menu" id="menu" action="/update-thumbnail" method="post" enctype="multipart/form-data">
+        <label for="folder">Select Folder</label>
+        <select name="folder" id="folder">
+        </select>
+        <br>
+        <label for="">Upload New Thumbnail</label>
+        <label class="thm-btn" for="thumbnail">Upload</label>
+        <input type="file" id="thumbnail" accept="image/*" hidden="hidden">
+        <br>
+        <button class="up-btn" type="submit">Update Thumbnail</button>
+      </form>
+    <div id="bg" onclick="closes()" class="bg">
+
+</div>
+<button class="menu-btn" onclick="openn()">edit thumbnail</button>
+    
+<div class="header"><p>MyGames</p></div>
+{{folderList}}
+<script>
+        const bg = document.getElementById('bg');
+        const menu = document.getElementById('menu');
+    function openn() {
+        menu.style.display = 'flex';
+        bg.style.display = 'flex';
+    }
+    function closes() {
+
+        menu.style.display = 'none';
+        bg.style.display = 'none';
+    }
+    // Fetch available folders and populate the dropdown menu
+    fetch('/folders')
+      .then(response => response.json())
+      .then(data => {
+        const folderDropdown = document.getElementById('folder');
+        data.folders.forEach(folder => {
+          const option = document.createElement('option');
+          option.value = folder;
+          option.textContent = folder;
+          folderDropdown.appendChild(option);
+        });
+      })
+      .catch(error => console.error('Error fetching folders:', error));
+  </script>
+</body>
+</html>
